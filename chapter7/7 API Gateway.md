@@ -2,28 +2,22 @@
 
 API Gateway是微服务架构中不可或缺的部分。API Gateway的定义以及存在的意义，Chris已经为大家描述过了，本文不再赘述，以下是链接：
 
->  中文版：[http://dockone.io/article/482](http://dockone.io/article/482)
->
->  英文版：[https://www.nginx.com/blog/building-microservices-using-an-api-gateway/](https://www.nginx.com/blog/building-microservices-using-an-api-gateway/)
+> 中文版：[http:\/\/dockone.io\/article\/482](http://dockone.io/article/482)
+> 
+> 英文版：[https:\/\/www.nginx.com\/blog\/building-microservices-using-an-api-gateway\/](https://www.nginx.com/blog/building-microservices-using-an-api-gateway/)
 
 使用API Gateway后，客户端和微服务之间的网络图变成下图：
 
 ![API Gateway](images/gateway.png)
 
-
-
 通过API Gateway，可以统一向外部系统提供REST API。Spring Cloud中使用Zuul作为API Gateway。Zuul提供了动态路由、监控、回退、安全等功能。
 
 下面我们进入Zuul的学习：
-
-
 
 ### 准备工作
 
 1. 启动服务：microservice-discovery-eureka
 2. 启动服务：microservice-provider-user
-
-
 
 ### 使用Zuul
 
@@ -32,30 +26,30 @@ API Gateway是微服务架构中不可或缺的部分。API Gateway的定义以�
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-	<modelVersion>4.0.0</modelVersion>
+    <modelVersion>4.0.0</modelVersion>
 
-	<artifactId>microservice-api-gateway</artifactId>
-	<packaging>jar</packaging>
+    <artifactId>microservice-api-gateway</artifactId>
+    <packaging>jar</packaging>
 
-	<parent>
-		<groupId>com.itmuch.cloud</groupId>
-		<artifactId>spring-cloud-microservice-study</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
-	</parent>
+    <parent>
+        <groupId>com.itmuch.cloud</groupId>
+        <artifactId>spring-cloud-microservice-study</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
 
-	<dependencies>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-zuul</artifactId>
-		</dependency>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-zuul</artifactId>
+        </dependency>
 
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-eureka</artifactId>
-		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-eureka</artifactId>
+        </dependency>
+    </dependencies>
 </project>
 ```
 
@@ -69,9 +63,9 @@ API Gateway是微服务架构中不可或缺的部分。API Gateway的定义以�
 @SpringBootApplication
 @EnableZuulProxy
 public class ZuulApiGatewayApplication {
-	public static void main(String[] args) {
-		SpringApplication.run(ZuulApiGatewayApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(ZuulApiGatewayApplication.class, args);
+    }
 }
 ```
 
@@ -93,13 +87,11 @@ eureka:
 
 这样，一个简单的API Gateway就完成了。
 
-
-
 ### 测试
 
-启动microservice-api-gateway项目。还记得我们之前访问通过[http://localhost:8000/1](http://localhost:8000/1)去访问microservice-provider-user服务中id=1的用户信息吗？
+启动microservice-api-gateway项目。还记得我们之前访问通过[http:\/\/localhost:8000\/1](http://localhost:8000/1)去访问microservice-provider-user服务中id=1的用户信息吗？
 
-我们现在访问[http://localhost:8050/microservice-provider-user/1](http://localhost:8050/microservice-provider-user/1)试试。会惊人地看到：
+我们现在访问[http:\/\/localhost:8050\/microservice-provider-user\/1](http://localhost:8050/microservice-provider-user/1)试试。会惊人地看到：
 
 ```json
 {"id":1,"username":"Tom","age":12}
@@ -119,8 +111,6 @@ http://GATEWAY:GATEWAY_PORT/想要访问的Eureka服务id的小写/**
 http://想要访问的Eureka服务id的小写:该服务端口/**
 ```
 
-
-
 ### 自定义路径
 
 上文我们已经完成了通过API Gateway去访问微服务的目的，是通过
@@ -135,7 +125,7 @@ http://GATEWAY:GATEWAY_PORT/想要访问的Eureka服务id的小写/**
 http://localhost:8050/user/1
 ```
 
-就能够将请求路由到http://localhost:8000/1呢？
+就能够将请求路由到[http:\/\/localhost:8000\/1](http://localhost:8000/1呢？)
 
 只需要做一点小小的配置即可：
 
@@ -158,8 +148,6 @@ zuul:
       path: /user/**                                    # 想要映射到的路径
       service-id: microservice-provider-user            # Eureka中的serviceId
 ```
-
-
 
 ### 忽略某些服务
 
@@ -197,12 +185,10 @@ zuul:
 
 测试结果：
 
-| URL                                      | 结果                                 | 备注                                       |
-| ---------------------------------------- | ---------------------------------- | ---------------------------------------- |
-| http://localhost:8050/microservice-provider-user/1 | 404                                | 说明microservice-provider-user未被路由         |
-| http://localhost:8050/movie/ribbon/1     | {"id":1,"username":"Tom","age":12} | 说明microservice-consumer-movie-ribbon被路由了。 |
-
-
+| URL | 结果 | 备注 |
+| --- | --- | --- |
+| [http:\/\/localhost:8050\/microservice-provider-user\/1](http://localhost:8050/microservice-provider-user/1) | 404 | 说明microservice-provider-user未被路由 |
+| [http:\/\/localhost:8050\/movie\/ribbon\/1](http://localhost:8050/movie/ribbon/1) | {"id":1,"username":"Tom","age":12} | 说明microservice-consumer-movie-ribbon被路由了。 |
 
 ### 不使用Eureka使用Zuul
 
@@ -223,21 +209,16 @@ zuul:
 
 不过笔者并不建议这么做，因为得自己配置URL，不是很方便。
 
-
-
 ### 其他使用
 
 Zuul还支持更多的特性、更多的配置项甚至是定制，具体还得各位自行发掘。
-
-
 
 ### 其他API Gateway
 
 Zuul只是API Gateway的一种，其他API Gateway有很多，譬如Nginx Plus、Kong等等。
 
-
-
 ### 参考文档
 
-[https://www.nginx.com/blog/building-microservices-using-an-api-gateway/](https://www.nginx.com/blog/building-microservices-using-an-api-gateway/)
-[http://microservices.io/patterns/apigateway.html](http://microservices.io/patterns/apigateway.html)
+[https:\/\/www.nginx.com\/blog\/building-microservices-using-an-api-gateway\/](https://www.nginx.com/blog/building-microservices-using-an-api-gateway/)
+[http:\/\/microservices.io\/patterns\/apigateway.html](http://microservices.io/patterns/apigateway.html)
+
