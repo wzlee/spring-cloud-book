@@ -125,7 +125,7 @@ http://GATEWAY:GATEWAY_PORT/想要访问的Eureka服务id的小写/**
 http://localhost:8050/user/1
 ```
 
-就能够将请求路由到[http:\/\/localhost:8000\/1呢？](http://localhost:8000/1呢？)
+就能够将请求路由到[http:\/\/localhost:8000\/1](http://localhost:8000/1呢？)
 
 只需要做一点小小的配置即可：
 
