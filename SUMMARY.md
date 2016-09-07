@@ -13,6 +13,7 @@
     * [第3节：Turbine](chapter5/5.3 Turbine.md)
 * [第6章：配置中心](chapter6/6 配置中心.md)
 * [第7章：API Gateway](chapter7/7 API Gateway.md)
+    * [第1节：集成Security和Oauth2](chapter7/第1节：集成security和oauth2.md)
 * [第8章：使用Docker构建微服务](chapter8/8 使用Docker构建微服务.md)
     * [第1节：使用Maven插件构建Docker镜像](chapter8/8.1 使用Maven插件构建Docker镜像.md)
 
